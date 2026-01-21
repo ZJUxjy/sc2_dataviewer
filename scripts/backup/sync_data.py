@@ -162,7 +162,7 @@ def sync_matches_history():
         # 同步对战历史（默认最近365天，最多10000场比赛）
         match_count = sync_service.sync_matches_for_top_players(
             top_players_limit=500,
-            days_back=365*2,  # 1年的对战历史
+            days_back=365,  # 1年的对战历史
             matches_limit=20000  # 最多2万场比赛
         )
         

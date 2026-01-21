@@ -1,109 +1,73 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
+  baseURL: 'http://localhost:8000',
   timeout: 10000,
   headers: {
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
 })
 
 // 请求拦截器
 api.interceptors.request.use(
-  config => {
+  (config) => {
     return config
   },
-  error => {
+  (error) => {
     return Promise.reject(error)
   }
 )
 
 // 响应拦截器
 api.interceptors.response.use(
-  response => {
+  (response) => {
     return response.data
   },
-  error => {
-    console.error('API Error:', error)
+  (error) => {
+    console.error('API 请求失败:', error)
     return Promise.reject(error)
   }
 )
 
-// 选手相关API
+// 选手相关 API
 export const playerAPI = {
-  // 获取选手列表
-  getPlayers(params = {}) {
-    return api.get('/players', { params })
-  },
-  
-  // 获取单个选手详情
-  getPlayer(id) {
-    return api.get(`/players/${id}`)
-  },
-  
-  // 搜索选手
-  searchPlayers(query) {
-    return api.get('/players', { params: { search: query } })
-  },
-  
-  // 获取选手比赛记录
-  getPlayerMatches(playerId, params = {}) {
-    return api.get(`/players/${playerId}/matches`, { params })
-  },
-  
-  // 获取选手统计数据
-  getPlayerStats(playerId) {
-    return api.get(`/players/${playerId}/stats`)
-  },
-  
-  // 获取对战历史
-  getHeadToHead(playerId, opponentId) {
-    return api.get(`/players/${playerId}/head-to-head/${opponentId}`)
-  }
+  getPlayers: (params) => api.get('/api/players', { params }),
+  getPlayer: (playerId) => api.get(`/api/players/${playerId}`),
+  getPlayerMatches: (playerId, params) => api.get(`/api/players/${playerId}/matches`, { params }),
+  getTopPlayers: () => api.get('/api/players/top10'),
+  getPlayerStats: (playerId) => api.get(`/api/players/${playerId}/stats`),
+  getHeadToHead: (playerId, opponentId) => api.get(`/api/players/${playerId}/head-to-head/${opponentId}`),
 }
 
-// 比赛相关API
+// 比赛相关 API
 export const matchAPI = {
-  // 获取比赛列表
-  getMatches(params = {}) {
-    return api.get('/matches', { params })
-  }
+  getMatches: (params) => api.get('/api/matches', { params }),
+  getMatch: (matchId) => api.get(`/api/matches/${matchId}`),
 }
 
-// 排行榜API
+// 排行榜 API
 export const rankingAPI = {
-  getRanking(params = {}) {
-    return api.get('/ranking', { params })
-  }
+  getRanking: (params) => api.get('/api/ranking', { params }),
 }
 
-// 赛事API
+// 赛事相关 API
 export const eventAPI = {
-  getEvents(params = {}) {
-    return api.get('/events', { params })
-  }
+  getEvents: (params) => api.get('/api/events', { params }),
+  getTopEvents: (params) => api.get('/api/events/top', { params }),
 }
 
-// 同步API
+// 同步服务
 export const syncAPI = {
-  syncPlayers() {
-    return api.post('/sync/players')
-  },
-  
-  syncMatches(days = 30) {
-    return api.post('/sync/matches', null, { params: { days } })
-  },
-  
-  syncTopPlayers(limit = 500) {
-    return api.post('/sync/top-players', null, { params: { limit } })
-  }
+  syncPlayers: () => api.post('/api/sync/players'),
+  syncMatches: () => api.post('/api/sync/matches'),
+  syncTopPlayers: () => api.post('/api/sync/top-players'),
 }
 
-// 其他工具API
-export const utilAPI = {
-  getRaces() {
-    return api.get('/races')
-  }
+// 统计数据 API
+export const statsAPI = {
+  getStatsSummary: () => api.get('/api/stats/summary'),
+  getRaceStats: () => api.get('/api/stats/races'),
+  getCountryStats: () => api.get('/api/stats/countries'),
 }
 
 export default api

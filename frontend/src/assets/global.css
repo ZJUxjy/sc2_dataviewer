@@ -1,0 +1,336 @@
+/* ===========================================
+   CyberKoprulu Theme - SC2 Pro Stats
+   科幻风格全局样式
+   =========================================== */
+
+/* 导入未来感字体 */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap');
+
+/* CSS 变量 - 科幻配色系统 */
+:root {
+  /* 主色调 - 霓虹赛博朋克 */
+  --color-bg-primary: #0a0a0f;
+  --color-bg-secondary: #14141f;
+  --color-bg-glass: rgba(20, 20, 35, 0.6);
+  --color-bg-card: rgba(25, 25, 45, 0.4);
+  
+  /* 霓虹色系 */
+  --color-neon-blue: #00f2fe;
+  --color-neon-purple: #8b00ff;
+  --color-neon-cyan: #00ffea;
+  --color-neon-pink: #ff00c8;
+  
+  /* 状态色 */
+  --color-success: #00ff9d;
+  --color-warning: #ffaa00;
+  --color-error: #ff0044;
+  
+  /* 文字色 */
+  --color-text-primary: #e0e0ff;
+  --color-text-secondary: #a0a0c0;
+  --color-text-muted: #606080;
+  
+  /* 边框与分割线 */
+  --color-border-primary: rgba(0, 242, 254, 0.3);
+  --color-border-secondary: rgba(139, 0, 255, 0.2);
+  --color-border-glow: rgba(0, 242, 254, 0.5);
+  
+  /* 字体 */
+  --font-display: 'Orbitron', monospace;
+  --font-body: 'Inter', sans-serif;
+  
+  /* 阴影与光效 */
+  --shadow-neon: 0 0 10px var(--color-neon-blue);
+  --shadow-neon-purple: 0 0 15px var(--color-neon-purple);
+  --shadow-glow: 0 0 20px rgba(0, 242, 254, 0.3);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.3);
+  
+  /* 动画 */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.5s ease;
+}
+
+/* ===========================================
+   基础重置与全局样式
+   =========================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #app {
+  height: 100%;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+/* 滚动条赛博风格 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-neon-blue);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-neon-cyan);
+}
+
+/* ===========================================
+   动画效果
+   =========================================== */
+
+/* 扫描线动画 */
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+.scanline {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-neon-blue), transparent);
+  animation: scanline 8s linear infinite;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* 霓虹灯闪烁 */
+@keyframes neon-flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+/* 全息投影效果 */
+@keyframes hologram {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0); }
+}
+
+/* 脉冲光效 */
+@keyframes pulse-glow {
+  0% { box-shadow: 0 0 5px var(--color-neon-blue); }
+  50% { box-shadow: 0 0 20px var(--color-neon-blue), 0 0 30px var(--color-neon-blue); }
+  100% { box-shadow: 0 0 5px var(--color-neon-blue); }
+}
+
+/* ===========================================
+   玻璃拟态组件
+   =========================================== */
+
+/* 玻璃面板 */
+.glass-panel {
+  background: var(--color-bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border-primary);
+  border-radius: 16px;
+  box-shadow: var(--shadow-card), inset 0 0 20px rgba(0, 242, 254, 0.1);
+  transition: var(--transition-normal);
+}
+
+.glass-panel:hover {
+  border-color: var(--color-border-glow);
+  box-shadow: var(--shadow-card), var(--shadow-glow);
+}
+
+/* 玻璃卡片 */
+.glass-card {
+  background: var(--color-bg-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--color-border-secondary);
+  border-radius: 12px;
+  padding: 24px;
+  transition: var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, var(--color-neon-blue), var(--color-neon-purple));
+  border-radius: 12px;
+  opacity: 0;
+  z-index: -1;
+  transition: var(--transition-normal);
+}
+
+.glass-card:hover::before {
+  opacity: 0.3;
+}
+
+.glass-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-neon-blue);
+  box-shadow: var(--shadow-glow);
+}
+
+/* ===========================================
+   霓虹按钮
+   =========================================== */
+
+.neon-button {
+  position: relative;
+  padding: 12px 24px;
+  background: transparent;
+  border: 2px solid var(--color-neon-blue);
+  color: var(--color-neon-blue);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: var(--transition-normal);
+  overflow: hidden;
+}
+
+.neon-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--color-neon-blue), transparent);
+  transition: left 0.5s;
+}
+
+.neon-button:hover::before {
+  left: 100%;
+}
+
+.neon-button:hover {
+  background: var(--color-neon-blue);
+  color: var(--color-bg-primary);
+  box-shadow: var(--shadow-neon);
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+.neon-button.purple {
+  border-color: var(--color-neon-purple);
+  color: var(--color-neon-purple);
+}
+
+.neon-button.purple:hover {
+  background: var(--color-neon-purple);
+  box-shadow: var(--shadow-neon-purple);
+}
+
+/* ===========================================
+   霓虹文字
+   =========================================== */
+
+.neon-text {
+  font-family: var(--font-display);
+  color: var(--color-neon-cyan);
+  text-shadow: 0 0 10px var(--color-neon-cyan), 0 0 20px var(--color-neon-cyan);
+  animation: neon-flicker 2s infinite;
+}
+
+.neon-text.title {
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: 3px;
+}
+
+.neon-text.subtitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+/* ===========================================
+   网格背景
+   =========================================== */
+
+.cyborg-grid {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.1;
+  background-image: 
+    linear-gradient(rgba(0, 242, 254, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 242, 254, 0.1) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: hologram 6s ease-in-out infinite;
+}
+
+/* ===========================================
+   实用工具类
+   =========================================== */
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.space-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.text-gradient {
+  background: linear-gradient(45deg, var(--color-neon-blue), var(--color-neon-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* 数据可视化效果 */
+.data-point {
+  position: relative;
+  padding: 4px 8px;
+  background: rgba(0, 242, 254, 0.1);
+  border: 1px solid var(--color-border-primary);
+  border-radius: 4px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  color: var(--color-neon-cyan);
+}
+
+/* 进度条 */
+.progress-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(0, 242, 254, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-neon-blue), var(--color-neon-purple));
+  border-radius: 2px;
+  transition: width var(--transition-slow);
+  box-shadow: var(--shadow-neon);
+}

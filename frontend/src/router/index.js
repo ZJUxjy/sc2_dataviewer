@@ -10,39 +10,71 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: {
+      title: '星际争霸2数据终端 - SC2 Pro Stats'
+    }
   },
   {
     path: '/players',
     name: 'PlayerList',
-    component: PlayerList
+    component: PlayerList,
+    meta: {
+      title: '职业选手列表 - SC2 Pro Stats'
+    }
   },
   {
     path: '/players/:id',
     name: 'PlayerDetail',
     component: PlayerDetail,
-    props: true
+    props: true,
+    meta: {
+      title: '选手详情 - SC2 Pro Stats'
+    }
   },
   {
     path: '/ranking',
     name: 'Ranking',
-    component: Ranking
+    component: Ranking,
+    meta: {
+      title: '全球排行榜 - SC2 Pro Stats'
+    }
   },
   {
     path: '/events',
     name: 'Events',
-    component: Events
+    component: Events,
+    meta: {
+      title: '赛事记录 - SC2 Pro Stats'
+    }
   },
   {
     path: '/about',
     name: 'About',
-    component: About
+    component: About,
+    meta: {
+      title: '关于我们 - SC2 Pro Stats'
+    }
   }
 ]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { top: 0 }
+    }
+  }
+})
+
+// 路由守卫 - 更新页面标题
+router.beforeEach((to, from, next) => {
+  const title = to.meta.title || 'SC2 Pro Stats - 星际争霸2职业选手数据终端'
+  document.title = title
+  next()
 })
 
 export default router
